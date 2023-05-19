@@ -1,0 +1,17 @@
+{
+  "short_name": "ArchDesigner",
+  "name": "ArchDesigner",
+  "description": "Cloud service that allows creating modular arch BIM models of constructions",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "128x128 64x64 32x32 24x24 16x16",
+      "type": "image/svg+xml"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#7A0021",
+  "background_color": "#ffffff",
+  "orientation": "landscape"
+}

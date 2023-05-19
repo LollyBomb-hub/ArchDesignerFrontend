@@ -1,0 +1,20 @@
+.toolbar-drawer > :nth-child(1) {
+    background-color: #7A0021;
+}
+
+.toolbar-button {
+    top: 50% !important;
+    position: absolute !important;
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+    right: -60px !important;
+    width: 100px !important;
+    height: 50px !important;
+    opacity: 0 !important;
+    transition: opacity 0.3s;
+}
+
+.toolbar-button:hover {
+    opacity: 1 !important;
+    transition: opacity 0.3s;
+}
