@@ -1,7 +1,8 @@
 import axios, {AxiosProgressEvent, AxiosRequestConfig} from "axios";
 import {
     AccountInfoRead,
-    AuthorizationInfo, CompleteStageInfoRead,
+    AuthorizationInfo,
+    CompleteStageInfoRead,
     MeshCompleteInfoRead,
     MeshInfoCreate,
     MeshMinInfoRead,
@@ -93,11 +94,12 @@ export const uploadModel = async (token: string, mic: ModelInfoCreate, ifc_file:
     }, getAxiosConfig(token, undefined))
 }
 
-export const listModels = async (token: string, limit?: number) => {
+export const listModels = async (token: string, limit?: number, offset?: number) => {
     return axios.get<ModelMinifiedInfoRead[]>(
         "/api/model/list",
         getAxiosConfig(token, {
-            limit: limit
+            limit: limit,
+            offset: offset
         })
     )
 }
@@ -121,6 +123,19 @@ export const createMesh = async (token: string, mic: MeshInfoCreate) => {
         "/api/mesh",
         mic,
         getAxiosConfig(token, undefined)
+    )
+}
+
+export const listMeshs = async (token: string, limit?: number, offset?: number) => {
+    return axios.get<MeshMinInfoRead[]>(
+        "/api/mesh/list",
+        getAxiosConfig(
+            token,
+            {
+                limit: limit,
+                offset: offset
+            }
+        )
     )
 }
 
@@ -153,10 +168,10 @@ export const createStage = async (token: string, sic: StageInfoCreate) => {
     )
 }
 
-export const listStages = async (token: string, limit?: number) => {
+export const listStages = async (token: string, limit?: number, offset?: number) => {
     return axios.get<StageInfoRead[]>(
         "/api/stage/list",
-        getAxiosConfig(token, {limit: limit})
+        getAxiosConfig(token, {limit: limit, offset: offset})
     )
 }
 
