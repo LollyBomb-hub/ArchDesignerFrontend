@@ -2,11 +2,15 @@ import {combineReducers, configureStore} from "@reduxjs/toolkit";
 import {useDispatch} from "react-redux";
 import accountSlice from './reducers/accountReducer';
 import projectSlice from './reducers/projectReducer';
+import stageSlice from './reducers/stageReducer';
+import meshSlice from './reducers/meshReducer';
 
 const rootReducer = combineReducers(
     {
         accountSlice,
-        projectSlice
+        projectSlice,
+        meshSlice,
+        stageSlice
     }
 )
 

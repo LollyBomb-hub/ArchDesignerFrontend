@@ -141,7 +141,7 @@ const AuthPage = (props: IProps) => {
                     </Container>
                 </AppBar>
             </Grid>
-            <Grid style={{height: "100vh", backgroundImage: 'url("background_auth.png")', backgroundSize: "100% 100%"}}
+            <Grid style={{height: "100vh", backgroundImage: 'url("/background_auth.png")', backgroundSize: "100% 100%"}}
                   justifyContent="center"
                   alignItems="center" container direction="row">
                 <Grid item>

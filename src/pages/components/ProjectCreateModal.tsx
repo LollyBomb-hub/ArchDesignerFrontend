@@ -68,7 +68,7 @@ export default connector((props: IProps) => {
         <>
             <Modal aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description"
                    open={props.creatingProject} onClose={() => props.isCreatingProject(false)}>
-                <Box sx={style}>
+                <Box component={"div"} sx={style}>
                     <div id="modal-modal-title">
                         <Typography variant="h6" component="h2">
                             Форма создания проекта
@@ -87,7 +87,6 @@ export default connector((props: IProps) => {
                                 ({
                                      values,
                                      errors,
-                                     touched,
                                      handleChange,
                                      handleSubmit,
                                  }) => {

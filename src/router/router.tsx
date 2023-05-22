@@ -5,6 +5,7 @@ import {UnexpectedErrorPage} from "../pages/ErrorPage";
 import MainWindow from "../pages/MainPage";
 import RegisterPage from "../pages/RegisterPage";
 import ProjectsPage from "../pages/ProjectsPage";
+import PlyPage from "../pages/PlyPage";
 
 export const router = createBrowserRouter([
     {
@@ -31,6 +32,10 @@ export const router = createBrowserRouter([
             {
                 path: '/stages',
                 element: <div>Stages</div>
+            },
+            {
+                path: '/ply/creator',
+                element: <PlyPage/>
             }
         ]
     },

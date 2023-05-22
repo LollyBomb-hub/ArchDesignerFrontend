@@ -2,6 +2,7 @@ import React from "react";
 import PortraitIcon from '@mui/icons-material/Portrait';
 import DescriptionIcon from '@mui/icons-material/Description';
 import {Box, Button, Divider, Skeleton, Stack, Typography} from "@mui/material";
+import MuiBox from '@mui/material/Box'
 import {loadAccountInfo, unlogin} from "../../store/reducers/accountReducer";
 import {formatTimestampForLocale} from "../../server/interfaces";
 import {AccountCircle, EventAvailable, Star} from "@mui/icons-material";
@@ -22,7 +23,7 @@ class AccountInfoComponent extends React.Component<IProps, never> {
     render() {
         if (this.props.loadingState === 'PENDING') {
             return (
-                <Box minWidth={"300px"} width={"400px"} maxWidth={"400px"} padding={1.5}>
+                <MuiBox component={"div"} minWidth={"300px"} width={"400px"} maxWidth={"400px"} padding={1.5}>
                     <Stack marginBottom={2} direction="row" fontSize={30} alignItems={"center"} gap={1}>
                         <AccountCircle htmlColor="#c8f7ff" style={{fontSize: 50}} fontSize={"inherit"}/>
                         <Skeleton width={"100%"}/>
@@ -47,11 +48,11 @@ class AccountInfoComponent extends React.Component<IProps, never> {
                     <Typography paddingLeft={1} marginBottom={2} color={"text.secondary"}>
                         <Skeleton width={"100%"}/>
                     </Typography>
-                </Box>
+                </MuiBox>
             )
         }
         return (
-            <Box minWidth={"300px"} width={"400px"} maxWidth={"400px"} padding={1.5}>
+            <MuiBox component={"div"} minWidth={"300px"} width={"400px"} maxWidth={"400px"} padding={1.5}>
                 <Stack marginBottom={2} direction="row" fontSize={30} alignItems={"center"} gap={1}>
                     <AccountCircle htmlColor="#c8f7ff" style={{fontSize: 50}} fontSize={"inherit"}/>
                     <Typography color={"text.primary"}>О пользователе</Typography>
@@ -84,7 +85,7 @@ class AccountInfoComponent extends React.Component<IProps, never> {
                 }}>
                     Выйти
                 </Button>
-            </Box>
+            </MuiBox>
         )
     }
 }

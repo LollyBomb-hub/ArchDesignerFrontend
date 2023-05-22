@@ -145,7 +145,7 @@ class ProjectsGridComponent extends React.Component<IProps, IState> {
         return (
             <>
                 <ProjectCreateModal/>
-                <Box padding={1.5}>
+                <Box component={"div"} padding={1.5}>
                     <Grid marginBottom={1} container flexWrap={"nowrap"} direction="row">
                         <Grid item>
                             <Stack marginBottom={2} direction="row" fontSize={30} alignItems={"center"} gap={1}>
