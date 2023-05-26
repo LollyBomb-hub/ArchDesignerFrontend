@@ -4,12 +4,14 @@ import accountSlice from './reducers/accountReducer';
 import projectSlice from './reducers/projectReducer';
 import stageSlice from './reducers/stageReducer';
 import meshSlice from './reducers/meshReducer';
+import modelSlice from './reducers/modelReducer';
 
 const rootReducer = combineReducers(
     {
         accountSlice,
         projectSlice,
         meshSlice,
+        modelSlice,
         stageSlice
     }
 )

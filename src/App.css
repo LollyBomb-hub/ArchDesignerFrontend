@@ -16,3 +16,7 @@ html, body, #root {
 #main-page {
     transition: width 1s;
 }
+
+#root {
+    background-color: #ECECEC
+}

@@ -3,7 +3,7 @@ import {IRootState} from "../store/store";
 import {connect, ConnectedProps} from "react-redux";
 import {
     Alert,
-    AppBar,
+    AppBar, Box,
     Button,
     Container,
     FormControl,
@@ -60,35 +60,16 @@ const AuthPage = (props: IProps) => {
     )
     if (authorized) {
         return (
-            <>
+            <Box component={'div'} sx={{display: 'flex'}}>
                 <ActionToolbar
                     currentMenuItem={props.currentMenuItem}
                     selectMenuItem={props.selectMenuItem}
                     open={!props.closedToolbar}
                     onToolbarClick={props.toolbarClick}/>
-                <section id={"main-page"}
-                         style={{
-                             marginLeft: `${props.closedToolbar ? 54 : 240}px`,
-                             height: "100%",
-                             overflowX: "auto",
-                             backgroundColor: "#f0f2f5"
-                         }}>
+                <Box component={"main"} sx={{flexGrow: 1}}>
                     <Outlet/>
-                    <footer
-                        style={
-                            {
-                                marginTop: "30px",
-                                height: "70px",
-                                backgroundColor: "#FFFFFF",
-                                opacity: 1,
-                                display: 'flex',
-                                alignItems: 'center'
-                            }
-                        }>
-                        <Typography color={"text.secondary"} style={{marginLeft: "10px"}}>@ArchDesign</Typography>
-                    </footer>
-                </section>
-            </>
+                </Box>
+            </Box>
         )
     }
     const handleClose = (setter: (f: boolean) => void, modifyParams: boolean) => (() => {

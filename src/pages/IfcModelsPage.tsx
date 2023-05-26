@@ -1,8 +1,8 @@
 import React from "react";
 import {IRootState} from "../store/store";
 import {connect, ConnectedProps} from "react-redux";
-import ProjectsGridComponent from "./components/ProjectsGridComponent";
 import {Grid} from "@mui/material";
+import IfcModelsGridComponent from "./components/IfcModelsGridComponent";
 
 
 interface IProps extends ReduxProps {
@@ -16,7 +16,7 @@ class ProjectsPage extends React.Component<IProps, IState> {
     render() {
         return (
             <Grid padding={2} bgcolor={"#FFFFFF"}>
-                <ProjectsGridComponent/>
+                <IfcModelsGridComponent/>
             </Grid>
         )
     }

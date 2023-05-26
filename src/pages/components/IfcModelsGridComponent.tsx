@@ -14,23 +14,20 @@ import {
     Stack,
     Typography
 } from "@mui/material";
-import ApartmentIcon from "@mui/icons-material/Apartment";
-import 'react-data-grid/lib/styles.css';
-import './Projects.css'
 import {
-    countProjectsInBusinessAccount,
-    isCreatingProject,
-    loadProjects,
-    reset,
-    resetCountLoading,
+    countModelsThunk,
+    isUploadingModel,
+    listModelsThunk,
+    resetCount,
+    resetList,
     setLimit,
     setPage
-} from "../../store/reducers/projectReducer";
+} from "../../store/reducers/modelReducer";
 import moment from "moment";
-import {AddBox, AddHomeWork} from "@mui/icons-material";
-import ProjectCreateModal from "./ProjectCreateModal";
+import {AddBox} from "@mui/icons-material";
 import {DataGrid, GridColDef} from '@mui/x-data-grid';
-import {ProjectInfoRead} from "../../server/interfaces";
+import {ModelMinifiedInfoRead} from "../../server/interfaces";
+import ModelUploadModal from "./ModelUploadModal";
 
 const NoData = () => (
     <div style={{
@@ -43,16 +40,15 @@ const NoData = () => (
         justifyContent: 'center'
     }}>
         <Stack direction="column" fontSize={30} alignItems={"center"} gap={1}>
-            <AddHomeWork color={"primary"} style={{fontSize: 50}} fontSize={"inherit"}/>
             <Typography color={"text.primary"}>Здесь пока нет проектов.<br/>Поспешите
                 создать первый!</Typography>
         </Stack>
     </div>
 )
 
-const columns: GridColDef<ProjectInfoRead>[] = [
+const columns: GridColDef<ModelMinifiedInfoRead>[] = [
     {
-        field: 'project_name',
+        field: 'model_name',
         editable: false,
         sortable: false,
         filterable: false,
@@ -61,7 +57,7 @@ const columns: GridColDef<ProjectInfoRead>[] = [
         renderHeader: (props) => {
             return (<Grid className="header-cell" item container bgcolor={"inherit"} alignItems="center"><Typography
                 textAlign="center">Наименование
-                проекта</Typography></Grid>)
+                модели</Typography></Grid>)
         },
         renderCell: (props) => {
             const name = props.value
@@ -91,8 +87,8 @@ const columns: GridColDef<ProjectInfoRead>[] = [
         }
     },
     {
-        field: 'created_at',
-        headerName: 'Создан',
+        field: 'uploaded_at',
+        headerName: 'Загружена',
         disableColumnMenu: true,
         editable: false,
         sortable: false,
@@ -116,21 +112,21 @@ interface IState {
 }
 
 
-class ProjectsGridComponent extends React.Component<IProps, IState> {
+class IfcModelsGridComponent extends React.Component<IProps, IState> {
     constructor(props: Readonly<IProps> | IProps) {
         super(props);
         window.addEventListener("unload", this.reset)
     }
 
     componentDidMount() {
-        this.props.loadProjects()
-        this.props.countProjectsInBusinessAccount()
+        this.props.listModelsThunk()
+        this.props.countModelsThunk()
     }
 
     reset = () => {
         window.removeEventListener("unload", this.reset)
-        this.props.reset()
-        this.props.resetCountLoading()
+        this.props.resetList()
+        this.props.resetCount()
     }
 
     componentWillUnmount() {
@@ -141,13 +137,13 @@ class ProjectsGridComponent extends React.Component<IProps, IState> {
         const {limit, page} = this.props;
         const prevLimit = prevProps.limit;
         const prevPage = prevProps.page;
-        if (limit !== prevLimit || page !== prevPage || (this.props.projectCreatingState !== prevProps.projectCreatingState && prevProps.projectCreatingState === 'PENDING')) {
-            this.props.loadProjects()
+        if (limit !== prevLimit || page !== prevPage || (this.props.uploadState !== prevProps.uploadState && prevProps.uploadState === 'PENDING')) {
+            this.props.listModelsThunk()
         }
     }
 
     render() {
-        const total_count = this.props.totalCount;
+        const total_count = this.props.modelsCount;
         const limit = this.props.limit;
         const page = this.props.page;
         if (total_count === undefined) {
@@ -156,22 +152,22 @@ class ProjectsGridComponent extends React.Component<IProps, IState> {
         const max_pages = total_count / limit;
         return (
             <>
-                <ProjectCreateModal/>
+                <ModelUploadModal/>
                 <Box component={"div"} padding={1.5}>
                     <Grid marginBottom={1} container flexWrap={"nowrap"} direction="row">
                         <Grid item>
                             <Stack marginBottom={2} direction="row" fontSize={30} alignItems={"center"} gap={1}>
-                                <ApartmentIcon htmlColor="#a77444" style={{fontSize: 50}} fontSize={"inherit"}/>
-                                Проекты
+                                {/*<ApartmentIcon htmlColor="#a77444" style={{fontSize: 50}} fontSize={"inherit"}/>*/}
+                                BIM модели
                             </Stack>
                         </Grid>
                         <Grid item container direction="row" justifyContent={"flex-end"} alignItems={"end"}>
                             <Grid item>
-                                <Button onClick={() => this.props.isCreatingProject(true)} variant="outlined"
+                                <Button onClick={() => this.props.isUploadingModel(true)} variant="outlined"
                                         color={"success"}
                                         endIcon={<AddBox color={"success"} style={{fontSize: 20}}
                                                          fontSize={"inherit"}/>}>
-                                    Создать
+                                    Загрузить модель
                                 </Button>
                             </Grid>
                         </Grid>
@@ -179,7 +175,11 @@ class ProjectsGridComponent extends React.Component<IProps, IState> {
                     <Divider/>
                     {
                         total_count > 0 ? (
-                            <DataGrid pageSizeOptions={[]} hideFooterSelectedRowCount={true} disableRowSelectionOnClick
+                            <DataGrid onRowDoubleClick={
+                                (params, event, details) => {
+                                    console.log(params.row)
+                                }
+                            } pageSizeOptions={[]} hideFooterSelectedRowCount={true} disableRowSelectionOnClick
                                       sx={{marginTop: 2, marginBottom: 2}} localeText={
                                 {
                                     MuiTablePagination: {
@@ -195,8 +195,8 @@ class ProjectsGridComponent extends React.Component<IProps, IState> {
                                     columnMenuManageColumns: "Управление отображаемыми колонками"
                                 }
                             } getRowId={
-                                (el => el.project_id)
-                            } columns={columns} rows={this.props.projects || []}/>) : NoData()
+                                (el => el.model_id)
+                            } columns={columns} rows={this.props.listModels || []}/>) : NoData()
                     }
                     <Grid marginBottom={2} container alignItems="center" direction={"row-reverse"}>
                         {total_count > 10 && (<Grid item>
@@ -230,24 +230,24 @@ class ProjectsGridComponent extends React.Component<IProps, IState> {
 }
 
 
-const mapStateToProps = (state: IRootState) => (
-    {
-        ...state.projectSlice
+const mapStateToProps = (state: IRootState) => {
+    return {
+        ...state.modelSlice
     }
-)
+}
 
 const mapDispatchToProps = {
-    reset,
-    resetCountLoading,
-    loadProjects,
-    setLimit,
     setPage,
-    countProjectsInBusinessAccount,
-    isCreatingProject
+    setLimit,
+    isUploadingModel,
+    listModelsThunk,
+    resetCount,
+    countModelsThunk,
+    resetList,
 }
 
 const connector = connect(mapStateToProps, mapDispatchToProps)
 
 type ReduxProps = ConnectedProps<typeof connector>
 
-export default connector(ProjectsGridComponent)
+export default connector(IfcModelsGridComponent)

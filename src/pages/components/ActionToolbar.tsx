@@ -115,79 +115,76 @@ class ActionToolbar extends React.Component<IProps, IState> {
         let {open} = this.props;
         let currentDrawerWidth = open ? drawerWidth : closedDrawerWidth;
         return (
-            <aside style={
-                {
-                    height: "100vh",
-                    position: "fixed",
-                    left: "0px",
-                    flex: `0 0 ${currentDrawerWidth}px`,
-                    maxWidth: `${currentDrawerWidth}px`,
-                    minWidth: `${currentDrawerWidth}px`,
-                    width: `${currentDrawerWidth}px`
-                }
-            }>
-                <div style={{height: "0"}}>
-                    <Button onClick={() => {
-                        this.props.onToolbarClick()
-                    }} variant={"contained"} className={"toolbar-button"} color="primary"
-                            aria-label="add">
-                        {open ? <Remove style={
-                            {
-                                width: "24px",
-                                marginLeft: "32px"
-                            }
-                        }/> : <Add style={
-                            {
-                                width: "24px",
-                                marginLeft: "32px"
-                            }
-                        }/>}
-                    </Button>
-                </div>
-                <Drawer className={"toolbar-drawer"} variant={"permanent"} anchor="left" open={open}>
-                    <DrawerHeader>
-                        <Stack bgcolor={"primary.main"} height={"70px"} direction="column" justifyContent="center"
-                               alignItems="center">
-                            {
-                                open ? (<Typography color={"contrast.main"} fontSize={"30px"}>
-                                    <Logo width={200}/>
-                                </Typography>) : (<OnlyIconLogo width={54} height={70}/>)
-                            }
-                        </Stack>
-                    </DrawerHeader>
-                    <List>
+            <Drawer className={"toolbar-drawer"} variant={"permanent"} anchor="left" open={open}>
+                <DrawerHeader>
+                    <Stack bgcolor={"primary.main"} height={"70px"} direction="column" justifyContent="center"
+                           alignItems="center">
                         {
-                            items.map(
-                                el => {
-                                    const currentMenuItem = items.indexOf(el);
-                                    let selected = this.props.currentMenuItem === currentMenuItem;
-                                    return (
-                                        <Link key={el.text} to={el.linkTo}>
-                                            <MuiLink component={"div"} color={"contrast.main"} onClick={(e) => {
-                                                this.props.selectMenuItem(currentMenuItem);
-                                            }}>
-                                                <ListItem disablePadding style={{fontSize: "18px"}}>
-                                                    <ListItemButton style={
-                                                        {
-                                                            backgroundColor: selected ? "#E9587F" : "inherit"
-                                                        }
-                                                    }>
-                                                        <ListItemIcon color={"inherit"}
-                                                                      style={{color: "#FFFFFF", fontSize: "22px"}}>
-                                                            {el.icon}
-                                                        </ListItemIcon>
-                                                        <ListItemText primary={el.text}/>
-                                                    </ListItemButton>
-                                                </ListItem>
-                                            </MuiLink>
-                                        </Link>
-                                    )
-                                }
-                            )
+                            open ? (<Typography color={"contrast.main"} fontSize={"30px"}>
+                                <Logo width={200}/>
+                            </Typography>) : (<OnlyIconLogo width={54} height={70}/>)
                         }
-                    </List>
-                </Drawer>
-            </aside>
+                    </Stack>
+                </DrawerHeader>
+                <List sx={
+                    {
+                        display: 'flex',
+                        flexDirection: 'column',
+                        flex: 1
+                    }
+                }>
+                    {
+                        items.map(
+                            el => {
+                                const currentMenuItem = items.indexOf(el);
+                                let selected = this.props.currentMenuItem === currentMenuItem;
+                                return (
+                                    <Link key={el.text} to={el.linkTo}>
+                                        <MuiLink component={"div"} color={"contrast.main"} onClick={(e) => {
+                                            this.props.selectMenuItem(currentMenuItem);
+                                        }}>
+                                            <ListItem disablePadding style={{fontSize: "18px"}}>
+                                                <ListItemButton style={
+                                                    {
+                                                        backgroundColor: selected ? "#E9587F" : "inherit"
+                                                    }
+                                                }>
+                                                    <ListItemIcon color={"inherit"}
+                                                                  style={{color: "#FFFFFF", fontSize: "22px"}}>
+                                                        {el.icon}
+                                                    </ListItemIcon>
+                                                    <ListItemText primary={el.text}/>
+                                                </ListItemButton>
+                                            </ListItem>
+                                        </MuiLink>
+                                    </Link>
+                                )
+                            }
+                        )
+                    }
+                </List>
+                <Button sx={
+                    {
+                        height: "60px",
+                        maxWidth: `${currentDrawerWidth}px`,
+                        minWidth: `${currentDrawerWidth}px`,
+                        width: `${currentDrawerWidth}px`
+                    }
+                } onClick={() => {
+                    this.props.onToolbarClick()
+                }} variant={"contained"} color="primary"
+                        aria-label="add">
+                    {open ? <Remove style={
+                        {
+                            width: "24px",
+                        }
+                    }/> : <Add style={
+                        {
+                            width: "24px",
+                        }
+                    }/>}
+                </Button>
+            </Drawer>
         )
     }
 }

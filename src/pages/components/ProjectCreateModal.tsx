@@ -1,7 +1,7 @@
 import React from "react";
 import {IRootState} from "../../store/store";
 import {connect, ConnectedProps} from "react-redux";
-import {Alert, AlertTitle, Box, Button, Modal, TextField, Typography} from "@mui/material";
+import {Alert, AlertTitle, Box, Button, Modal, Snackbar, TextField, Typography} from "@mui/material";
 import {createProject, isCreatingProject, resetCreatingProject} from "../../store/reducers/projectReducer";
 import {Formik} from "formik";
 import {ProjectInfoCreate} from "../../server/interfaces";
@@ -44,24 +44,24 @@ const validationSchema = Yup.object().shape(
 export default connector((props: IProps) => {
     if (props.projectCreatingState === 'ERRORED') {
         return (
-            <>
+            <Snackbar open={props.creatingProject} autoHideDuration={6000} onClose={()=>{props.resetCreatingProject()}}>
                 <Alert onClose={()=>{props.resetCreatingProject()}} severity="error">
                     <AlertTitle>
                         Ошибка
                     </AlertTitle>
                     Не вышло создать проект
                 </Alert>
-            </>
+            </Snackbar>
         )
     }
     if (props.projectCreatingState === 'DONE') {
         return (
-            <>
+            <Snackbar open={props.creatingProject} autoHideDuration={6000} onClose={()=>{props.resetCreatingProject()}}>
                 <Alert onClose={()=>{props.resetCreatingProject()}} severity="success">
                     <AlertTitle>Успешно</AlertTitle>
                     Проект создан
                 </Alert>
-            </>
+            </Snackbar>
         )
     }
     return (

@@ -1,4 +1,4 @@
-import axios, {AxiosProgressEvent, AxiosRequestConfig} from "axios";
+import axios, {AxiosProgressEvent, AxiosRequestConfig, AxiosResponse} from "axios";
 import {
     AccountInfoRead,
     AuthorizationInfo,
@@ -11,13 +11,15 @@ import {
     ModelMinifiedInfoRead,
     ProjectInfoCreate,
     ProjectInfoRead,
-    ProjectListRequest,
+    OffsetLimitInterface,
     RegistrationInfo,
     StageInfoCreate,
     StageInfoRead,
     StageToModelLinkInfoRead,
     StateToModelLinkInfoCreate
 } from './interfaces';
+
+export const baseUrl = "http://localhost:8000";
 
 export const getAxiosConfig = (
     token: string,
@@ -26,7 +28,7 @@ export const getAxiosConfig = (
     onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void
 ): AxiosRequestConfig => {
     return {
-        baseURL: "http://localhost:8000",
+        baseURL: baseUrl,
         headers: {
             "Authorization": `Token ${token}`
         },
@@ -74,7 +76,7 @@ export const getAccount = async (token: string) => {
     return axios.get<AccountInfoRead>("/api/account", getAxiosConfig(token, undefined))
 }
 
-export const listProjects = async (token: string, req: ProjectListRequest) => {
+export const listProjects = async (token: string, req: OffsetLimitInterface) => {
     return axios.get<ProjectInfoRead[]>("/api/project/list", getAxiosConfig(token, req))
 }
 
@@ -88,10 +90,16 @@ export const apiCreateProject = async (token: string, pic: ProjectInfoCreate) =>
 
 export const uploadModel = async (token: string, mic: ModelInfoCreate, ifc_file: string) => {
     return axios.postForm<ModelMinifiedInfoRead>("/api/model", {
-        model_name: mic.model_name,
-        model_description: mic.model_description,
+        info_create: JSON.stringify(mic),
         ifc_file: ifc_file
     }, getAxiosConfig(token, undefined))
+}
+
+export const countModels = async (token: string) => {
+    return axios.get<number>(
+        '/api/model/count',
+        getAxiosConfig(token, undefined)
+    )
 }
 
 export const listModels = async (token: string, limit?: number, offset?: number) => {
@@ -188,4 +196,12 @@ export const readFullStageInfo = async (token: string, stage_id: number) => {
         `/api/stage/${stage_id}/full/info`,
         getAxiosConfig(token, undefined)
     )
+}
+
+
+export const processResponse = <R,E>(response: AxiosResponse<R, E>, rejectWithValue: (a: any) => any) => {
+    if (response.status === 200) {
+        return response.data
+    }
+    return rejectWithValue(response.data)
 }

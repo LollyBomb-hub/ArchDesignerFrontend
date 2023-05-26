@@ -13,7 +13,7 @@ export interface AccountInfoRead {
     about?: string
 }
 
-export interface ProjectListRequest {
+export interface OffsetLimitInterface {
     limit?: number
     offset?: number
 }
